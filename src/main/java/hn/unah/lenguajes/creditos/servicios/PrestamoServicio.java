@@ -41,4 +41,9 @@ public class PrestamoServicio {
         return A / B;
 
     }
+
+    public Prestamo obtenerPrestamoPorCodigo(long codigo) {
+
+        return this.prestamoRepositorio.findById(codigo).get();
+    }
 }

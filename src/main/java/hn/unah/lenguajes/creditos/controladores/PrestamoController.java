@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
 @RequestMapping("api/prestamo")
 public class PrestamoController {
@@ -30,13 +28,14 @@ public class PrestamoController {
     }
 
     @PostMapping("/nuevo/{dni}")
-    public Prestamo crearPrestamo(@PathVariable(name = "dni") String dni
-        ,@RequestBody Prestamo nvPrestamo) {
-        
-        
+    public Prestamo crearPrestamo(@PathVariable(name = "dni") String dni, @RequestBody Prestamo nvPrestamo) {
+
         return this.crearPrestamo(dni, nvPrestamo);
     }
-    
-    
-    
+
+    @GetMapping("ver/{codigo}")
+    public Prestamo getMethodName(@PathVariable long codigo) {
+        return this.prestamoServicio.obtenerPrestamoPorCodigo(codigo);
+    }
+
 }
