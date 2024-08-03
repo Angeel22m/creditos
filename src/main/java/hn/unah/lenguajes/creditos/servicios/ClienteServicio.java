@@ -16,15 +16,35 @@ public class ClienteServicio {
     private ClienteRepositorio clienteRepositorio;
 
     public Cliente crearCliente(Cliente nvCliente) {
+        if (!this.clienteRepositorio.existsById(nvCliente.getDni())) {
+            List<Prestamo> nvPrestamo = nvCliente.getPrestamo();
+            if (nvPrestamo != null) {
+                for (Prestamo prestamo : nvPrestamo) {
+                    prestamo.setCliente(nvCliente);
+                    prestamo.setCuota(this.obtenerCuota(prestamo.getMonto(),prestamo.getInteres()));
+                }
 
-        List<Prestamo> nvPrestamo = nvCliente.getPrestamo();
-        if (nvPrestamo != null) {
-            for (Prestamo prestamo : nvPrestamo) {
-                prestamo.setCliente(nvCliente);
             }
-
+            return this.clienteRepositorio.save(nvCliente);
         }
-        return this.clienteRepositorio.save(nvCliente);
+
+        return null;
+    }
+
+    public List<Cliente> obtenerClientes() {
+
+        return this.clienteRepositorio.findAll();
+    }
+
+    public Cliente buscarPorDni(String dni) {
+        return this.clienteRepositorio.findById(dni).get();
+    }
+
+    public double obtenerCuota(double monto, double interes){
+        double A = Math.pow(monto*interes*(1+interes), 60);
+        double B = Math.pow((1+interes), 60)-1;
+
+        return A/B;
 
     }
 }
