@@ -20,7 +20,7 @@ public class PrestamoServicio {
 
     public Prestamo crearPrestamo(String dni, Prestamo nvPrestamo) {
         if (this.clienteRepositorio.existsById(dni)) {
-
+            nvPrestamo.setCliente(this.clienteRepositorio.findById(dni).get());
             nvPrestamo.setCuota(this.obtenerCuota(nvPrestamo.getMonto(), nvPrestamo.getInteres()));
             return this.prestamoRepositorio.save(nvPrestamo);
 
